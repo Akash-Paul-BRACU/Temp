@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+            	<form method="GET" id="submitForm">
+            		<input type="text" class="form-control" id="input-value" placeholder="Enter a location for Weather ...">
+                    <div class="input-group-append">
+                        <button type="submit" id="submit" class="btn btn-danger confirm">Search</button>
+                    </div>
+            	</form>    
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="city-name"> Unknown Place</h1>
+            <h3 ><span id="temperature">0</span>&deg;F</h3>
+            <h3 id="weather">Smooth</h3>   
+        </div>
+    </div>
+    <script>
+        const inputValue = document.getElementById("input-value");
+        const form=document.getElementById("submitForm")
+        const button = document.getElementById("submit");
+        const name = document.querySelector('.name');
+        const desc = document.querySelector('.desc');
+        const temp = document.querySelector('.temp');
+        button.addEventListener('click', function(event){
+        	event.preventDefault()
+            fetch('https://api.openweathermap.org/data/2.5/weather?q='+inputValue.value+'&appid=5bc7e1b07e299067d3edd59a22f27f6b')
+            .then(res=>res.json())
+            .then(data => {
+
+                //City Name
+                document.getElementById('city-name').innerText = data.name;
+
+                //Temperature
+                document.getElementById('temperature').innerText = data.main.temp;
+                
+                //Weather Condition
+                const condition = data.weather[0];
+                const desc = condition.description;
+                document.getElementById('weather').innerText = desc;
+                })
+            .catch(err => alert("Wrong city name"));
+        })   
+    </script>
+
+</body>
+</html>
